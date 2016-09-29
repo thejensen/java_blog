@@ -76,19 +76,13 @@ public class Tag {
     }
   }
 
+  public static List<Post> getPosts() {
+    List<Post> posts = new ArrayList<Post>();
 
-//   public List<Object> getPosts() {
-//     List<Object> allPosts = new ArrayList<Object>();
-//
-//     try(Connection con = DB.sql2o.open()) {
-//       String sqlPost = "SELECT * FROM posts WHERE id = :id;";
-//       List<Post> posts = con.createQuery(sqlPost)
-//         .addParameter("id", this.id)
-//         .throwOnMappingFailure(false)
-//         .executeAndFetch(Post.class);
-//         allPosts.addAll(posts);
-//       }
-//       return allPosts;
-//     }
+    try(Connection con = DB.sql2o.open()) {
+      String
+    }
+    return posts;
+  }
 
 }

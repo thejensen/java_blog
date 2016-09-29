@@ -54,17 +54,21 @@ public class TagTest {
     assertEquals(testTag, Tag.fetch(testTag.getId()));
   }
 
-  // @Test
-  // public void getPosts_returnsAllPostsWithTagId_true() {
-  //   testTag.save();
-  //
-  // }
-
   @Test
   public void delete_deletesTagFromDatabaseWithoutDeletingAssociatedPosts_true() {
     testTag.save();
     testTag.delete();
     assertEquals(null, Tag.fetch(testTag.getId()));
   }
+
+  @Test
+  public void getPosts_returnsAllPostsWithTagId_1() {
+    testTag.save();
+    Post testPost = new Post("Geez whiz", "The programming wonderkid");
+    testPost.save();
+    testTag.getPosts();
+    assertTrue(1, testTag.getPost().size());
+  }
+
 
 }

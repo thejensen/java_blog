@@ -2,6 +2,7 @@ import org.junit.*;
 import org.sql2o.*;
 import static org.junit.Assert.*;
 import java.util.Arrays;
+import java.util.List;
 
 public class PostTest {
   Post testPost;
@@ -61,26 +62,27 @@ public class PostTest {
   }
 
   @Test
-  public void addPerson_addsPersonToCommunity() {
-    Community testCommunity = new Community("Fire enthusiasts", "Flame on!");
-    testCommunity.save();
-    Person testPerson = new Person("Henry", "henry@henry.com");
-    testPerson.save();
-    testCommunity.addPerson(testPerson);
-    Person savedPerson = testCommunity.getPersons().get(0);
-    assertTrue(testPerson.equals(savedPerson));
+  public void addTag_addsTagToPost() {
+    testPost.save();
+    Tag testTag = new Tag("Hiking");
+    testTag.save();
+    testPost.addTag(testTag);
+    Tag savedTag = testPost.getTags().get(0);
+    assertTrue(testTag.equals(savedTag));
   }
 
-  // @Test
-  // public void getPersons_returnsAllPersons_List() {
-  //   Community testCommunity = new Community("Fire Enthusiasts", "Flame on!");
-  //   testCommunity.save();
-  //   Person testPerson = new Person("Henry", "henry@henry.com");
-  //   testPerson.save();
-  //   testCommunity.addPerson(testPerson);
-  //   List savedPersons = testCommunity.getPersons();
-  //   assertEquals(savedPersons.size(), 1);
-  // }
+  @Test
+  public void getTags_returnsAllTags_List() {
+    testPost.save();
+    Tag testTag = new Tag("Hiking");
+    testTag.save();
+    // adds post and tag to their join table
+    testPost.addTag(testTag);
+    // assigns the tags from the join table where the post id is whatever to a List
+    List savedTags = testPost.getTags();
+    // making sure the savedTags size is 1, so we know there's something in there.
+    assertEquals(savedTags.size(), 1);
+  }
 
 
 }
