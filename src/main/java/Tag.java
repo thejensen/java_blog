@@ -6,6 +6,8 @@ public class Tag {
   private String theme;
   private int id;
 
+  public static final int MAX_TAGS = 7;
+
   public Tag(String theme) {
     this.theme = theme;
   }
@@ -17,8 +19,6 @@ public class Tag {
   public int getId() {
     return id;
   }
-
-
 
   @Override
   public boolean equals(Object otherTag){
@@ -41,76 +41,54 @@ public class Tag {
   }
 
   public static List<Tag> all() {
-    String sql = "SELECT * FROM tags";
     try(Connection con = DB.sql2o.open()) {
+      String sql = "SELECT * FROM tags";
      return con.createQuery(sql).executeAndFetch(Tag.class);
     }
   }
-  
+
+  public void update(String theme) {
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "UPDATE tags SET theme=:theme WHERE id=:id;";
+      con.createQuery(sql)
+        .addParameter("id", id)
+        .addParameter("theme", theme)
+        .executeUpdate();
+    }
+  }
+
+  public static Tag fetch(int id) {
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "SELECT * FROM tags WHERE id=:id;";
+      Tag tag = con.createQuery(sql)
+        .addParameter("id", id)
+        .executeAndFetchFirst(Tag.class);
+      return tag;
+    }
+  }
+
+  public void delete() {
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "DELETE FROM tags WHERE id=:id;";
+      con.createQuery(sql)
+        .addParameter("id", id)
+        .executeUpdate();
+    }
+  }
+
+
+//   public List<Object> getPosts() {
+//     List<Object> allPosts = new ArrayList<Object>();
 //
-//   public static Tag find(int id) {
 //     try(Connection con = DB.sql2o.open()) {
-//       String sql = "SELECT * FROM persons where id=:id";
-//       Tag person = con.createQuery(sql)
-//         .addParameter("id", id)
-//         .executeAndFetchFirst(Tag.class);
-//       return person;
-//     }
-//   }
-//
-//   public List<Object> getMonsters() {
-//     List<Object> allMonsters = new ArrayList<Object>();
-//
-//     try(Connection con = DB.sql2o.open()) {
-//       String sqlFire = "SELECT * FROM monsters WHERE personId=:id AND type='fire';";
-//       List<FireMonster> fireMonsters = con.createQuery(sqlFire)
+//       String sqlPost = "SELECT * FROM posts WHERE id = :id;";
+//       List<Post> posts = con.createQuery(sqlPost)
 //         .addParameter("id", this.id)
 //         .throwOnMappingFailure(false)
-//         .executeAndFetch(FireMonster.class);
-//         allMonsters.addAll(fireMonsters);
-//
-//       String sqlWater = "SELECT * FROM monsters WHERE personId=:id AND type='water';";
-//       List<WaterMonster> waterMonsters = con.createQuery(sqlWater)
-//         .addParameter("id", this.id)
-//         .throwOnMappingFailure(false)
-//         .executeAndFetch(WaterMonster.class);
-//         allMonsters.addAll(waterMonsters);
+//         .executeAndFetch(Post.class);
+//         allPosts.addAll(posts);
 //       }
-//       return allMonsters;
+//       return allPosts;
 //     }
-//
-//
-//   public List<Community> getCommunities() {
-//     try(Connection con = DB.sql2o.open()){
-//       String joinQuery = "SELECT community_id FROM communities_persons WHERE person_id = :person_id";
-//       List<Integer> communityIds = con.createQuery(joinQuery)
-//         .addParameter("person_id", this.getId())
-//         .executeAndFetch(Integer.class);
-//
-//       List<Community> communities = new ArrayList<Community>();
-//
-//       for (Integer communityId : communityIds) {
-//         String communityQuery = "SELECT * FROM communities WHERE id = :communityId";
-//         Community community = con.createQuery(communityQuery)
-//           .addParameter("communityId", communityId)
-//           .executeAndFetchFirst(Community.class);
-//         communities.add(community);
-//       }
-//       return communities;
-//     }
-//   }
-//
-//   public void leaveCommunity(Community community) {
-//     try(Connection con = DB.sql2o.open()){
-//       String joinRemovalQuery = "DELETE FROM communities_persons WHERE community_id = :communityId AND person_id = :personId;";
-//         con.createQuery(joinRemovalQuery)
-//           .addParameter("communityId", community.getId())
-//           .addParameter("personId", this.getId())
-//           .executeUpdate();
-//     }
-//   }
-//
-//
-//
-//
+
 }
