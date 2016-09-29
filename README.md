@@ -1,9 +1,9 @@
 <!--  main class -->
-As a user, I want to add a post with information I'd like to share with the world.
+X As a user, I want to add a post with information I'd like to share with the world.
 
-As a user, I want to edit my posts, so I can make improvements or corrections.
+X As a user, I want to edit my posts, so I can make improvements or corrections.
 
-As a user, I want to be able to delete posts I no longer like.
+X As a user, I want to be able to delete posts I no longer like.
 
 <!--  One to many relationship with post -->
 As a user, I want people to be able to add comments to my post.
