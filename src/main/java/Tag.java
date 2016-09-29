@@ -76,13 +76,24 @@ public class Tag {
     }
   }
 
-  public static List<Post> getPosts() {
-    List<Post> posts = new ArrayList<Post>();
-
+  public List<Post> getPosts() {
     try(Connection con = DB.sql2o.open()) {
-      String
+      // tag_id=:tag_id is important here, because we're adding the parameter tag_id, it has to match :tag_id
+      String joinQuery = "SELECT post_id FROM posts_tags WHERE tag_id=:howthiswork;";
+        List<Integer> postIds = con.createQuery(joinQuery)
+        .addParameter("howthiswork", this.getId())
+        .executeAndFetch(Integer.class);
+      List<Post> posts = new ArrayList<Post>();
+      for (Integer postId : postIds ) {
+        String postQuery = "SELECT * FROM posts WHERE id=:postId;";
+        Post post = con.createQuery(postQuery)
+          // postId here is the parameter set by the foreach loooop
+          .addParameter("postId", postId)
+          .executeAndFetchFirst(Post.class);
+        posts.add(post);
+      }
+      return posts;
     }
-    return posts;
   }
 
 }

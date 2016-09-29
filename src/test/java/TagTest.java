@@ -62,12 +62,16 @@ public class TagTest {
   }
 
   @Test
-  public void getPosts_returnsAllPostsWithTagId_1() {
+  public void getPosts_returnsAllPosts_List() {
     testTag.save();
-    Post testPost = new Post("Geez whiz", "The programming wonderkid");
+    Post testPost = new Post("Rawk", "An apple!");
     testPost.save();
-    testTag.getPosts();
-    assertTrue(1, testTag.getPost().size());
+    // adds post and tag to their join table
+    testPost.addTag(testTag);
+    // assigns the tags from the join table where the post id is whatever to a List
+    List savedPosts = testTag.getPosts();
+    // making sure the savedPosts size is 1, so we know there's something in there.
+    assertEquals(savedPosts.size(), 1);
   }
 
 

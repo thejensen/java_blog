@@ -95,9 +95,10 @@ public class Post {
     try(Connection con = DB.sql2o.open()) {
       // selects tagIds from the join table where the post id is 0 for testing, but increments up in our real database.
       String joinQuery = "SELECT tag_id FROM posts_tags WHERE post_id=:post_id";
-      // assigns tagIds to a List
+      // assigns tagIds to an INTEGER list because we already have an integer class built into java we can use, don't need nothing special.
       List<Integer> tagIds = con.createQuery(joinQuery)
         .addParameter("post_id", this.getId())
+        // Integer.class is baller here because we're just getting numbers, not whole objects, so.
         .executeAndFetch(Integer.class);
 
       // declares an empty arraylist for the tags to get all up in
